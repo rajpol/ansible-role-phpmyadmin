@@ -8,7 +8,7 @@ phpMyAdmin is a simple interface for interacting with MySQL databases via a web 
 
 ## Requirements
 
-**RedHat/CentOS**: Requires the EPEL repository on RedHat/CentOS 6.x hosts. You can install the EPEL repository using the `geerlingguy.repo-epel` role.
+**RedHat/CentOS**: Requires the EPEL repository on RHEL/CentOS hosts. You can install the EPEL repository using the `geerlingguy.repo-epel` role.
 
 **Debian/Ubuntu**: None.
 
