@@ -1,0 +1,32 @@
+---
+- name: Verify
+  hosts: all
+  gather_facts: true
+  tasks:
+    - name: Determine phpMyAdmin config file path
+      set_fact:
+        phpmyadmin_config_file: >-
+          {{ phpmyadmin_config_file | default(
+            (ansible_os_family == 'RedHat') | ternary(
+              '/etc/phpMyAdmin/config.inc.php',
+              '/etc/phpmyadmin/config.inc.php')) }}
+
+    - name: Ensure phpMyAdmin config file exists
+      stat:
+        path: "{{ phpmyadmin_config_file }}"
+      register: pma_config
+
+    - name: Assert phpMyAdmin config file present
+      assert:
+        that:
+          - pma_config.stat.exists
+
+    - name: Read phpMyAdmin config file
+      slurp:
+        src: "{{ phpmyadmin_config_file }}"
+      register: pma_conf_content
+
+    - name: Assert phpMyAdmin config contains MySQL host
+      assert:
+        that:
+          - "'{{ phpmyadmin_mysql_host }}' in (pma_conf_content.content | b64decode)"
